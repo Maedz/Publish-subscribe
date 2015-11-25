@@ -1,9 +1,8 @@
 // SimpleClient.java: A simple client program.
 import java.net.*;
 import java.io.*;
-import java.util.Scanner;
 
-public class Client {
+public class Subscriber {
 	
 	
 	public static void read(DataInputStream dis) throws IOException {
