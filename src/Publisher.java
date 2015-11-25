@@ -5,6 +5,7 @@ import java.io.*;
 public class Publisher {
 	
 	/*HELLO MATHIAS THIS IS TEST, IS WORK?*/
+	/*HELLO ALEX THIS IS TEST,IS WORK?*/
 	
 	public static void read(DataInputStream dis) throws IOException {
 		// Get an input file handle from the socket and read the input
