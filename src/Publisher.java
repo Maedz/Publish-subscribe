@@ -4,6 +4,7 @@ import java.io.*;
 
 public class Publisher {
 	
+	/*HELLO MATHIAS THIS IS TEST, IS WORK?*/
 	
 	public static void read(DataInputStream dis) throws IOException {
 		// Get an input file handle from the socket and read the input
@@ -15,7 +16,7 @@ public class Publisher {
 	public static void send(DataOutputStream dos) throws IOException {
 		// Get a communication stream associated with the socket
 		// Send a string!
-		
+
 		dos.writeUTF("");
 		// Close the connection, but not the server socket
 	}
