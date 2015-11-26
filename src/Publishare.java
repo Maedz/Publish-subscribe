@@ -18,9 +18,9 @@ public class Publishare {
 	private static void publish()
 	{	
 		Publisher thePublisher = new Publisher("Publisher1","192.168.10.1",12345);
-		// Don’t log publications.
+		// Don't log publications.
 		thePublisher.setLogWriting(false);
-		// Don’t print publications to screen.
+		// Don't print publications to screen.
 		thePublisher.setTesting(false);
 		thePublisher.connect();
 		//To	publish	the	position	of	bus	#10,	Publisher1	issues	the	following	commands:
@@ -33,6 +33,9 @@ public class Publishare {
 		// Set buss ID and its coordinates as name-value pairs.
 		thePublication.setProperty( "BusId", "#10" );
 		thePublication.setProperty( "Latitude", "42.35" );
+		thePublication.setProperty( "Longitude", "-71.12" );
+		// Send publication to MoPS broker.
+		thePublisher.pub( thePublication );
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
