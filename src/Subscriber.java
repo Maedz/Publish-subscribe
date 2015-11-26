@@ -1,4 +1,4 @@
-// SimpleClient.java: A simple client program.
+// Subscriber For Programming Assignment 2
 import java.net.*;
 import java.io.*;
 
