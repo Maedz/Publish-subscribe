@@ -35,7 +35,7 @@ public class Publishare {
 		thePublication.setProperty( "Latitude", "42.35" );
 		thePublication.setProperty( "Longitude", "-71.12" );
 		// Send publication to MoPS broker.
-		thePublisher.pub( thePublication );
+		thePublisher.publish(thePublication);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
