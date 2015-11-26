@@ -80,13 +80,13 @@ public class Publishare {
 	public static void main(String args[]) throws IOException 
 	{
 		List<VehiclePos> info = new ArrayList<VehiclePos>();
-		if(fetch() == null)
+		if((info = fetch()) == null)
 		{
 			
 		}
 		for(VehiclePos V : info)
 		{
-			System.out.println("Latitude: "+Float.toString(V.Latitude)+"\nLongitude: "+Float.toString(V.Longitude) );
+			System.out.println("Latitude: "+Float.toString(V.Latitude)+"\nLongitude: "+Float.toString(V.Longitude)+"\n" );
 		}
 	}
 
