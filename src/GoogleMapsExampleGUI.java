@@ -30,7 +30,7 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
 
     // TODO: Supply your own Google API key.
     // Note that an API key has a limited 
-    // lifetime and thus needs to be regenerated.
+    // lifetime and thus needs to be regenerated. OUR KEY ALEX: AIzaSyBR_wUAQ3iPM2e8WeoQIUw9c3xLJPRGZL8
     private static final String GOOGLE_API_KEY = "AIzaSyCMFBPuh1aTF7cYGEy22iaD2vDNmIcmX4Q";
     
     // Buses in the vicinity of MIT.
@@ -117,7 +117,7 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         MapLookup.setLicenseKey(GOOGLE_API_KEY);
         
      
-        Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","192.168.10.1",12345);
+        Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.204",6237);
         // Don’t log subscriptions.
         theSubscriber.setLogWriting(false);
      	// Don’t print subscriptions to screen.
@@ -140,7 +140,7 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         // Build a Google Static Map API URL of the form:
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
-        MapMarker theMapMarkertest = new MapMarker(42,42);
+        MapMarker theMapMarkertest = new MapMarker(42.356267, -71.098333);
         MapMarker theMapMarker1 = new MapMarker(42.357275,-71.095149);
         MapMarker theMapMarker2 = new MapMarker(42.358924,-71.097380);
         MapMarker theMapMarker3 = new MapMarker(42.360636,-71.094076);
@@ -150,7 +150,6 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
                     theMapMarker1,
                     theMapMarker2,
                     theMapMarker3);
-        
         try {
             
             // Retrieve map from Google Maps.

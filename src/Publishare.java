@@ -15,15 +15,16 @@ public class Publishare {
 	////   		CLASS THAT CONNECTS, UPLOAD AND DISCONNECTS FROM THE BROOKER   	  ////
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	private static void publish()
+	private static void publish(VehiclePos send)
 	{	
-		Publisher thePublisher = new Publisher("Publisher1","192.168.10.1",12345);
+		System.out.println("\nPublishing ...\n");
+		Publisher thePublisher = new Publisher("Publisher1","193.10.227.204",6237);
 		// Don't log publications.
 		thePublisher.setLogWriting(false);
 		// Don't print publications to screen.
 		thePublisher.setTesting(false);
 		thePublisher.connect();
-		//To	publish	the	position	of	bus	#10,	Publisher1	issues	the	following	commands:
+		// To	publish	the	position	of	bus	#10,	Publisher1	issues	the	following	commands:
 		// New publication.
 		HashtablePublication thePublication = new HashtablePublication();
 		// Publication time.
@@ -84,16 +85,24 @@ public class Publishare {
 	
 	public static void main(String args[]) throws IOException 
 	{
-		List<VehiclePos> info = new ArrayList<VehiclePos>();
-		if((info = fetch()) == null)
+		try
 		{
-			System.out.println("Error Could Not Fetch Bus Information");
+			while(true)
+			{
+				List<VehiclePos> info = new ArrayList<VehiclePos>();
+				if((info = fetch()) == null)
+				{
+					System.out.println("Error Could Not Fetch Bus Information");
+					System.exit(0);
+				}
+				publish(info.get(10));
+				Thread.sleep(30000);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Some Error Occured Exiting...");
 			System.exit(0);
 		}
-		for(VehiclePos V : info)
-		{
-			System.out.println("Latitude: "+Float.toString(V.Latitude)+"\nLongitude: "+Float.toString(V.Longitude)+"\n" );
-		}
 	}
-
 }
