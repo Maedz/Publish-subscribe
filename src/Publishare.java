@@ -36,6 +36,8 @@ public class Publishare {
 		thePublication.setProperty( "Longitude", "-71.12" );
 		// Send publication to MoPS broker.
 		thePublisher.publish(thePublication);
+		// Disconnect from broker
+		thePublisher.disconnectFromBroker();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +87,8 @@ public class Publishare {
 		List<VehiclePos> info = new ArrayList<VehiclePos>();
 		if((info = fetch()) == null)
 		{
-			
+			System.out.println("Error Could Not Fetch Bus Information");
+			System.exit(0);
 		}
 		for(VehiclePos V : info)
 		{
