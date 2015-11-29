@@ -140,7 +140,11 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         // Build a Google Static Map API URL of the form:
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
-     	
+     	try {
+     	    Thread.sleep(1000);                 //1000 milliseconds is one second.
+     	} catch(InterruptedException ex) {
+     	    Thread.currentThread().interrupt();
+     	}
      	System.out.println("LAT "+theListener.Latitude +"\nLON"+theListener.Longitude);
      	
        	MapMarker testMarker = new MapMarker(theListener.Latitude, theListener.Longitude);

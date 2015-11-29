@@ -33,12 +33,9 @@ public class Publishare {
 		thePublication.setValidity(System.currentTimeMillis() + 30000);
 		// Set buss ID and its coordinates as name-value pairs.
 		thePublication.setProperty( "BusId", "#10" );
-		thePublication.setProperty( "Latitude", "42.357999" );
-		thePublication.setProperty( "Longitude", "-71.095999" );
+		thePublication.setProperty( "Latitude", Float.toString(send.Latitude ));
+		thePublication.setProperty( "Longitude", Float.toString(send.Longitude ));
 		// Send publication to MoPS broker.
-		System.out.println("getProperties\t"	+thePublication.getProperties()				);
-		System.out.println("hashCode\t"			+thePublication.hashCode()					);
-
 		thePublisher.publish(thePublication);
 		// Disconnect from broker
 		thePublisher.disconnectFromBroker();
@@ -88,6 +85,7 @@ public class Publishare {
 	
 	public static void main(String args[]) throws IOException 
 	{
+		int i = 0;
 		try
 		{
 			while(true)
@@ -98,7 +96,8 @@ public class Publishare {
 					System.out.println("Error Could Not Fetch Bus Information");
 					System.exit(0);
 				}
-				publish(info.get(10));
+				publish(info.get(i));
+				++i;
 				Thread.sleep(30000);
 			}
 		}

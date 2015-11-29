@@ -17,13 +17,9 @@ public class Listener extends NotificationListener {
 	public void notify( UUID subscriberId,String subscriberName,Publication notification) {
 		// Handle notification from MoPS broker.
 		ReadingWritingXML test = new ReadingWritingXML("test", "test");
-		System.out.println();
 		String teststring = test.writeXML(notification);
 		String[] testarray;
 		testarray = teststring.split("type=\"string\">");
-		System.out.println("array\t" +testarray);
-		for(String s : testarray)
-			System.out.println("string \t" +s);
 	this.BusID 		= testarray[1].split("</attribute>")[0];
 	this.Latitude 	= Float.parseFloat(testarray[2].split("</attribute>")[0]);
 	this.Longitude 	= Float.parseFloat(testarray[3].split("</attribute>")[0]);
