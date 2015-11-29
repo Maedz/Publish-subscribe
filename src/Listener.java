@@ -15,13 +15,13 @@ public class Listener extends NotificationListener {
 	HashtablePublication retrievedPublication = new HashtablePublication();
 	@Override
 	public void notify( UUID subscriberId,String subscriberName,Publication notification) {
-		// Handle notification from MoPS broker.
-		ReadingWritingXML test = new ReadingWritingXML("test", "test");
-		String teststring = test.writeXML(notification);
-		String[] testarray;
-		testarray = teststring.split("type=\"string\">");
-	this.BusID 		= testarray[1].split("</attribute>")[0];
-	this.Latitude 	= Float.parseFloat(testarray[2].split("</attribute>")[0]);
-	this.Longitude 	= Float.parseFloat(testarray[3].split("</attribute>")[0]);
+	// Handle notification from MoPS broker.
+	ReadingWritingXML test = new ReadingWritingXML("test", "test");
+	String teststring = test.writeXML(notification);
+	String[] testarray;
+	testarray = teststring.split("type=\"string\">");
+	this.BusID 		= testarray[3].split("</attribute>")[0];
+	this.Latitude 	= Float.parseFloat(testarray[1].split("</attribute>")[0]);
+	this.Longitude 	= Float.parseFloat(testarray[2].split("</attribute>")[0]);
 	}
 }

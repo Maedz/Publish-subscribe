@@ -4,10 +4,14 @@
  */
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
+import javax.swing.Timer;
+
 import gmapstatic.*;
 import hr.fer.tel.pubsub.artefact.Publication;
 import hr.fer.tel.pubsub.common.ReadingWritingXML;
@@ -49,6 +53,37 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     public GoogleMapsExampleGUI() {
         initComponents();
     }
+    
+    private void Timer(ActionEvent evt) {
+		// TODO Auto-generated method stub
+    	try {
+    		MapMarker testMarker = new MapMarker(theListener.Latitude, theListener.Longitude);
+     		
+     		String theMapURIAsString = MapLookup
+     				.getMap(theLatitude,
+                    theLongitude, 
+                    	testMarker);
+ 			// Retrieve map from Google Maps.
+ 			URL theMapURI = new URL(theMapURIAsString);
+ 			theMap = ImageIO.read(theMapURI.openStream());
+        
+ 			// Create map image scaled to size of the application window size.
+ 			imagePanel1
+ 			.setImage(theMap
+ 					.getScaledInstance(
+ 							imagePanel1.getWidth(),
+ 							imagePanel1.getHeight(),
+ 							Image.SCALE_AREA_AVERAGING));
+        
+ 			// Display map image.
+ 			imagePanel1.repaint();
+ 			timer.restart();
+ 		} catch(Exception ex ) {
+ 			java.util.logging.Logger.getLogger(GoogleMapsExampleGUI
+ 					.class.getName())
+                	.log(java.util.logging.Level.SEVERE, null, ex);
+ 		}
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,8 +93,16 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        jButton1 = new javax.swing.JButton();
+    	
+    	timer = new Timer(10000, new java.awt.event.ActionListener() {
+    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+    			Timer(evt);
+    		}
+    	});
+ 		timer.setInitialDelay(0);
+ 		timer.start();
+        
+ 		jButton1 = new javax.swing.JButton();
         imagePanel1 = new ImagePanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,72 +160,29 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         // API key to identify your application.
         MapLookup.setLicenseKey(GOOGLE_API_KEY);
         
-     
-        Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.204",6237);
-        // Don't log subscriptions.
-        theSubscriber.setLogWriting(false);
-     	// Don't print subscriptions to screen.
-     	theSubscriber.setTesting(false);
-     	//Connect with MoPS broker.
-     	theSubscriber.connect();
-     	//Publications are caught by a listener.
-     	Listener theListener = new Listener();
-     	theSubscriber.setNotificationListener(theListener);
-    	//Create a new subscription.
-     	TripletSubscription theSubscription = new TripletSubscription();
-     	//Start the subscription directly.
-     	theSubscription.setStartTime(System.currentTimeMillis());
-     	// Time of validity: 30 seconds.
-     	theSubscription.setValidity(System.currentTimeMillis() + 30000);
-     	theSubscription.setProperty(new Triplet("BusId", "#10", "="));
-     	//Send subscription to MoPS broker.
-     	theSubscriber.subscribe(theSubscription);
+        theListener = new Listener();
+        Subscribe sub = new Subscribe();
+        try
+        {
+        	theListener = sub.main();
+        }
+        catch(Exception e)
+        {
+        	System.exit(0);
+        }
         // Build a Google Static Map API URL of the form:
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
-     	try {
-     	    Thread.sleep(1000);                 //1000 milliseconds is one second.
-     	} catch(InterruptedException ex) {
-     	    Thread.currentThread().interrupt();
-     	}
-     	System.out.println("LAT "+theListener.Latitude +"\nLON"+theListener.Longitude);
-     	
-       	MapMarker testMarker = new MapMarker(theListener.Latitude, theListener.Longitude);
 
-     	MapMarker theMapMarkertest = new MapMarker(42.356267, -71.098333);
-        MapMarker theMapMarker1 = new MapMarker(42.357275,-71.095149);
-        MapMarker theMapMarker2 = new MapMarker(42.358924,-71.097380);
-        MapMarker theMapMarker3 = new MapMarker(42.360636,-71.094076);
-        String theMapURIAsString = MapLookup
-                .getMap(theLatitude,
-                    theLongitude, 
-                    theMapMarker1,
-                    theMapMarker2,
-                    theMapMarker3,
-                    testMarker);
-        try {
-            
-            // Retrieve map from Google Maps.
-            URL theMapURI = new URL(theMapURIAsString);
-            theMap = ImageIO.read(theMapURI.openStream());
-            
-            // Create map image scaled to size of the application window size.
-            imagePanel1
-                    .setImage(theMap
-                        .getScaledInstance(
-                            imagePanel1.getWidth(),
-                            imagePanel1.getHeight(),
-                            Image.SCALE_AREA_AVERAGING));
-            
-            // Display map image.
-            imagePanel1.repaint();
-                        
-        } catch( IOException ex ) {
-            java.util.logging.Logger.getLogger(GoogleMapsExampleGUI
-                    .class.getName())
-                    .log(java.util.logging.Level.SEVERE, null, ex);
-        }    
-    }//GEN-LAST:event_jButton1ActionPerformed
+     		
+     		try {
+     			Thread.sleep(1000);                 //1000 milliseconds is one second.
+     		} catch(InterruptedException ex) {
+     		}
+     		
+     		
+     	}
+     	//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,6 +219,8 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    Timer timer;
+    private Listener theListener;
     private ImagePanel imagePanel1;
     private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
