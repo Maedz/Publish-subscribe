@@ -33,9 +33,12 @@ public class Publishare {
 		thePublication.setValidity(System.currentTimeMillis() + 30000);
 		// Set buss ID and its coordinates as name-value pairs.
 		thePublication.setProperty( "BusId", "#10" );
-		thePublication.setProperty( "Latitude", "42.35" );
-		thePublication.setProperty( "Longitude", "-71.12" );
+		thePublication.setProperty( "Latitude", "42.357999" );
+		thePublication.setProperty( "Longitude", "-71.095999" );
 		// Send publication to MoPS broker.
+		System.out.println("getProperties\t"	+thePublication.getProperties()				);
+		System.out.println("hashCode\t"			+thePublication.hashCode()					);
+
 		thePublisher.publish(thePublication);
 		// Disconnect from broker
 		thePublisher.disconnectFromBroker();

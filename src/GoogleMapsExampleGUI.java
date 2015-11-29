@@ -15,6 +15,7 @@ import hr.fer.tel.pubsub.entity.NotificationListener;
 import hr.fer.tel.pubsub.artefact.TripletSubscription;
 import hr.fer.tel.pubsub.common.Triplet;
 import hr.fer.tel.pubsub.entity.Subscriber;
+import hr.fer.tel.pubsub.artefact.HashtablePublication;
 
 /**
  *
@@ -118,16 +119,16 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         
      
         Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.204",6237);
-        // Don’t log subscriptions.
+        // Don't log subscriptions.
         theSubscriber.setLogWriting(false);
-     	// Don’t print subscriptions to screen.
+     	// Don't print subscriptions to screen.
      	theSubscriber.setTesting(false);
      	//Connect with MoPS broker.
      	theSubscriber.connect();
-     	//Publications are catched by a listener.
+     	//Publications are caught by a listener.
      	Listener theListener = new Listener();
      	theSubscriber.setNotificationListener(theListener);
-     	//Create a new subscription.
+    	//Create a new subscription.
      	TripletSubscription theSubscription = new TripletSubscription();
      	//Start the subscription directly.
      	theSubscription.setStartTime(System.currentTimeMillis());
@@ -136,11 +137,15 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
      	theSubscription.setProperty(new Triplet("BusId", "#10", "="));
      	//Send subscription to MoPS broker.
      	theSubscriber.subscribe(theSubscription);
-        
         // Build a Google Static Map API URL of the form:
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
-        MapMarker theMapMarkertest = new MapMarker(42.356267, -71.098333);
+     	
+     	System.out.println("LAT "+theListener.Latitude +"\nLON"+theListener.Longitude);
+     	
+       	MapMarker testMarker = new MapMarker(theListener.Latitude, theListener.Longitude);
+
+     	MapMarker theMapMarkertest = new MapMarker(42.356267, -71.098333);
         MapMarker theMapMarker1 = new MapMarker(42.357275,-71.095149);
         MapMarker theMapMarker2 = new MapMarker(42.358924,-71.097380);
         MapMarker theMapMarker3 = new MapMarker(42.360636,-71.094076);
@@ -149,7 +154,8 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
                     theLongitude, 
                     theMapMarker1,
                     theMapMarker2,
-                    theMapMarker3);
+                    theMapMarker3,
+                    testMarker);
         try {
             
             // Retrieve map from Google Maps.

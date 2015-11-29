@@ -1,22 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import hr.fer.tel.pubsub.artefact.Publication;
+import hr.fer.tel.pubsub.artefact.HashtablePublication;
 import hr.fer.tel.pubsub.common.ReadingWritingXML;
 import hr.fer.tel.pubsub.entity.NotificationListener;
 
+
 public class Listener extends NotificationListener {
-	public Listener() {
-		float Longitud;
-		float Latitude;
-	}
+	public Listener() {	}
+	public String 	BusID;
+	public float 	Longitude;
+	public float	Latitude;
+	HashtablePublication retrievedPublication = new HashtablePublication();
 	@Override
 	public void notify( UUID subscriberId,String subscriberName,Publication notification) {
 		// Handle notification from MoPS broker.
-		System.out.println("\nsubscriberName " + subscriberName);
-		System.out.println(notification.hashCode());
-		System.out.println(notification.getClass().toString());
-		System.out.println(notification.toString());
-		System.out.println(subscriberId);
-		System.out.println(notification.getId().toString());
-		// I någon av dessa så ska longitud oh det finnas tror jag för detta får vi från broker
+		ReadingWritingXML test = new ReadingWritingXML("test", "test");
+		System.out.println();
+		String teststring = test.writeXML(notification);
+		String[] testarray;
+		testarray = teststring.split("type=\"string\">");
+		System.out.println("array\t" +testarray);
+		for(String s : testarray)
+			System.out.println("string \t" +s);
+	this.BusID 		= testarray[1].split("</attribute>")[0];
+	this.Latitude 	= Float.parseFloat(testarray[2].split("</attribute>")[0]);
+	this.Longitude 	= Float.parseFloat(testarray[3].split("</attribute>")[0]);
 	}
 }
