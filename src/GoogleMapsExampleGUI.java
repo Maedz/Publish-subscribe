@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
@@ -57,12 +59,22 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     private void Timer(ActionEvent evt) {
 		// TODO Auto-generated method stub
     	try {
-    		MapMarker testMarker = new MapMarker(theListener.Latitude, theListener.Longitude);
-     		
-     		String theMapURIAsString = MapLookup
+    		MapMarker init = new MapMarker(theLatitude, theLongitude);
+     		String theMapURIAsString = (String) MapLookup
      				.getMap(theLatitude,
-                    theLongitude, 
-                    	testMarker);
+                    theLongitude,init).substring(0, 87);
+     		for(Listener l : theListeners)
+     		{
+     			if(l.Latitude != 9999)
+     			{
+     				theMapURIAsString += "|";
+     				theMapURIAsString += Float.toString(l.Latitude) + "," + Float.toString(l.Longitude);
+         				
+     			}
+     		}
+     		
+     		theMapURIAsString += "&sensor=false&key=AIzaSyCMFBPuh1aTF7cYGEy22iaD2vDNmIcmX4Q";
+     		System.out.println(theMapURIAsString);
  			// Retrieve map from Google Maps.
  			URL theMapURI = new URL(theMapURIAsString);
  			theMap = ImageIO.read(theMapURI.openStream());
@@ -79,9 +91,6 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
  			imagePanel1.repaint();
  			timer.restart();
  		} catch(Exception ex ) {
- 			java.util.logging.Logger.getLogger(GoogleMapsExampleGUI
- 					.class.getName())
-                	.log(java.util.logging.Level.SEVERE, null, ex);
  		}
 	}
 
@@ -94,14 +103,6 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
     	
-    	timer = new Timer(10000, new java.awt.event.ActionListener() {
-    		public void actionPerformed(java.awt.event.ActionEvent evt) {
-    			Timer(evt);
-    		}
-    	});
- 		timer.setInitialDelay(0);
- 		timer.start();
-        
  		jButton1 = new javax.swing.JButton();
         imagePanel1 = new ImagePanel();
 
@@ -158,13 +159,24 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         
         // Note: Google Static Maps API uses an
         // API key to identify your application.
+    	
         MapLookup.setLicenseKey(GOOGLE_API_KEY);
         
-        theListener = new Listener();
+        timer = new Timer(10000, new java.awt.event.ActionListener() {
+    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+    			Timer(evt);
+    		}
+    	});
+ 		timer.setInitialDelay(0);
+ 		timer.start();
+        
         Subscribe sub = new Subscribe();
         try
         {
-        	theListener = sub.main();
+        	for(int a = 100; a < 182; ++a)
+        	{
+        		theListeners.add(sub.main("#" + Integer.toString(a)));
+        	}
         }
         catch(Exception e)
         {
@@ -220,7 +232,7 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     Timer timer;
-    private Listener theListener;
+    private List<Listener> theListeners = new ArrayList<Listener>();
     private ImagePanel imagePanel1;
     private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables

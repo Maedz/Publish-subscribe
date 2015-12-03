@@ -10,8 +10,8 @@ import hr.fer.tel.pubsub.entity.NotificationListener;
 public class Listener extends NotificationListener {
 	public Listener() {	}
 	public String 	BusID;
-	public float 	Longitude;
-	public float	Latitude;
+	public float 	Longitude = 9999;
+	public float	Latitude = 9999;
 	HashtablePublication retrievedPublication = new HashtablePublication();
 	@Override
 	public void notify( UUID subscriberId,String subscriberName,Publication notification) {

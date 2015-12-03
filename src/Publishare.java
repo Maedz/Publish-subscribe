@@ -2,6 +2,9 @@
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import gmapstatic.MapLookup;
+import gmapstatic.MapMarker;
 import hr.fer.tel.pubsub.artefact.HashtablePublication;
 import hr.fer.tel.pubsub.entity.Publisher;
 import google.transit.realtime.GtfsRealtime;
@@ -15,7 +18,7 @@ public class Publishare {
 	////   		CLASS THAT CONNECTS, UPLOAD AND DISCONNECTS FROM THE BROOKER   	  ////
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	private static void publish(VehiclePos send)
+	private static void publish(List<VehiclePos> send)
 	{	
 		System.out.println("\nPublishing ...\n");
 		Publisher thePublisher = new Publisher("Publisher1","193.10.227.204",6237);
@@ -26,19 +29,22 @@ public class Publishare {
 		thePublisher.connect();
 		// To	publish	the	position	of	bus	#10,	Publisher1	issues	the	following	commands:
 		// New publication.
-		HashtablePublication thePublication = new HashtablePublication();
-		// Publication time.
-		thePublication.setStartTime(System.currentTimeMillis());
-		// Time of validity: 30 seconds.
-		thePublication.setValidity(System.currentTimeMillis() + 30000);
-		// Set buss ID and its coordinates as name-value pairs.
-		thePublication.setProperty( "BusId", "#10" );
-		thePublication.setProperty( "Latitude", Float.toString(send.Latitude ));
-		thePublication.setProperty( "Longitude", Float.toString(send.Longitude ));
-		// Send publication to MoPS broker.
-		thePublisher.publish(thePublication);
-		// Disconnect from broker
-		thePublisher.disconnectFromBroker();
+		for(VehiclePos v : send)
+		{
+			HashtablePublication thePublication = new HashtablePublication();
+			// Publication time.
+			thePublication.setStartTime(System.currentTimeMillis());
+			// Time of validity: 30 seconds.
+			thePublication.setValidity(System.currentTimeMillis() + 10000);
+			// Set buss ID and its coordinates as name-value pairs.
+			thePublication.setProperty( "BusId", v.Id );
+			thePublication.setProperty( "Latitude", Float.toString(v.Latitude));
+			thePublication.setProperty( "Longitude", Float.toString(v.Longitude));
+			// Send publication to MoPS broker.
+			thePublisher.publish(thePublication);
+		}
+			// Disconnect from broker
+			thePublisher.disconnectFromBroker();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +57,8 @@ public class Publishare {
 		List<VehiclePos> Information = new ArrayList<VehiclePos>();
 		try 
 		{
+			String id = "#";
+			int a = 100;
 			theVehUrl = new URL( "http://developer.mbta.com/lib/gtrtfs/Vehicles.pb" );
 			GtfsRealtime.FeedMessage theFeed = GtfsRealtime.FeedMessage.parseFrom( ( InputStream )theVehUrl.openStream() );
 			for (GtfsRealtime.FeedEntity anEntity : theFeed.getEntityList()) 
@@ -68,7 +76,9 @@ public class Publishare {
 				VehiclePos temp = new VehiclePos();
 				temp.Latitude = aPosition.getLatitude();
 				temp.Longitude = aPosition.getLongitude();
+				temp.Id = id + Integer.toString(a);
 				Information.add(temp);
+				++a;
 			}
 			} catch ( MalformedURLException ex ) {
 				return null;
@@ -85,21 +95,16 @@ public class Publishare {
 	
 	public static void main(String args[]) throws IOException 
 	{
-		int i = 0;
 		try
 		{
-			while(true)
+			List<VehiclePos> info = new ArrayList<VehiclePos>();
+			if((info = fetch()) == null)
 			{
-				List<VehiclePos> info = new ArrayList<VehiclePos>();
-				if((info = fetch()) == null)
-				{
-					System.out.println("Error Could Not Fetch Bus Information");
-					System.exit(0);
-				}
-				publish(info.get(i));
-				++i;
-				Thread.sleep(30000);
+				System.out.println("Error Could Not Fetch Bus Information");
+				System.exit(0);
 			}
+			publish(info);
+			Thread.sleep(30000);
 		}
 		catch(Exception e)
 		{
