@@ -36,10 +36,13 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     // Buses in the vicinity of MIT.
     private double theLatitude  = 42.358543;
     private double theLongitude = -71.096178;
+    //private double theLatitude  = 42.303113; //afk bussar
+    //private double theLongitude = -71.109925; //afk bussar
+        
     private int theMapWidth     = 512;
     private int theMapHeight    = 512;
     private int theZoom         = 14;
-    
+
     private BufferedImage theMap;
     
     /**
@@ -48,30 +51,46 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     public GoogleMapsExampleGUI() {
         initComponents();
     }
-    
+
     private void Timer(ActionEvent evt) {
 		// TODO Auto-generated method stub
     	try {
+                int minBus = 110;
+                int maxBus = 120;
+                double minAfkLat = 42.302;
+                double maxAfkLat = 42.304;
     		System.out.println("Timer");
     		timer.stop();
     		MapMarker init = new MapMarker(theLatitude, theLongitude);
      		String theMapURIAsString = (String) MapLookup
      				.getMap(theLatitude,
                     theLongitude,init).substring(0, 87);
+                int testint2 = 0;
      		for(Listener l : theListeners)
      		{
-     			if(l.Latitude != 9999)
+     			//if(l.Latitude != 9999 && Float.parseFloat(l.BusID.split("#")[1]) < maxBus && Float.parseFloat(l.BusID.split("#")[1]) > minBus)    //Bussar beroende på buss nummer
+                        //if(l.Latitude != 9999 && l.Latitude > minAfkLat && l.Latitude < maxAfkLat)        //Possible afk busses
+                        //if(l.Latitude != 9999 && ( l.Latitude < minAfkLat || l.Latitude > maxAfkLat))     //Exclude afk busses
+                        if(l.Latitude != 9999.0)                                                             //All busses
      			{
      				theMapURIAsString += "|";
      				theMapURIAsString += Float.toString(l.Latitude) + "," + Float.toString(l.Longitude);
          				
      			}
      		}
-     		
      		theMapURIAsString += "&sensor=false&key=AIzaSyBR_wUAQ3iPM2e8WeoQIUw9c3xLJPRGZL8";
-     		
+     		//System.out.println("HEIR COWMES FUCKER\n" + theMapURIAsString + "\nFUCKER IS COMMEN");
+                
+                String[] GetRidOfinitMarker = theMapURIAsString.split("42.358543,-71.096178\\|");
+                //String[] GetRidOfinitMarker = theMapURIAsString.split("42.303113,-71.109925\\|"); //afk bussar
+                String GottenRidOfinitMarker = GetRidOfinitMarker[0] + GetRidOfinitMarker[1];
+                
+                String test = theMapURIAsString.split("&markers=")[1];
+                String[] testa = test.split("\\|");
+                //for(String v : testa)System.out.println(v);  //alla inkomna positioner
  			// Retrieve map from Google Maps.
- 			URL theMapURI = new URL(theMapURIAsString);
+ 			//URL theMapURI = new URL(theMapURIAsString);
+                        URL theMapURI = new URL(GottenRidOfinitMarker); //URL Utan init marker
  			theMap = ImageIO.read(theMapURI.openStream());
         
  			// Create map image scaled to size of the application window size.
@@ -153,12 +172,9 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
         // Note: Google Static Maps API uses an
         // API key to identify your application.
-    	
         MapLookup.setLicenseKey(GOOGLE_API_KEY);
-        
         timer.start();
         
         Subscribe sub = new Subscribe();
@@ -176,9 +192,6 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         // Build a Google Static Map API URL of the form:
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
-
-     	
-     	
      	}
      	//GEN-LAST:event_jButton1ActionPerformed
 

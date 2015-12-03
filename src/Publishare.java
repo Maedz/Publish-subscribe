@@ -21,7 +21,8 @@ public class Publishare {
 	private static void publish(List<VehiclePos> send)
 	{	
 		System.out.println("\nPublishing ...\n");
-		Publisher thePublisher = new Publisher("Publisher1","193.10.227.204",6237);
+		//Publisher thePublisher = new Publisher("Publisher1","193.10.227.204",6237);     //Broker number 1
+                Publisher thePublisher = new Publisher("Publisher1","193.10.227.205",6237);   //Broker number 2
 		// Don't log publications.
 		thePublisher.setLogWriting(false);
 		// Don't print publications to screen.
@@ -57,7 +58,6 @@ public class Publishare {
 		List<VehiclePos> Information = new ArrayList<VehiclePos>();
 		try 
 		{
-			
 			int a = 100;
 			theVehUrl = new URL( "http://developer.mbta.com/lib/gtrtfs/Vehicles.pb" );
 			GtfsRealtime.FeedMessage theFeed = GtfsRealtime.FeedMessage.parseFrom( ( InputStream )theVehUrl.openStream() );
@@ -73,6 +73,11 @@ public class Publishare {
 					continue;
 				}
 				GtfsRealtime.Position aPosition = aVehicle.getPosition();
+                               /*System.out.println("BussID    = " +aVehicle.getVehicle().getId());
+                               System.out.println("BussLabel = " +aVehicle.getVehicle().getLabel());
+                               System.out.println("BussS-ID  = " +aVehicle.getStopId());
+                               System.out.println("Timestamp = " +aVehicle.getTimestamp());*/
+                                
 				String id = "#";
 				VehiclePos temp = new VehiclePos();
 				temp.Latitude = aPosition.getLatitude();

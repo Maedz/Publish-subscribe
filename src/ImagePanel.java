@@ -24,6 +24,7 @@ public class ImagePanel extends javax.swing.JPanel {
         super.paintComponent(g);
         if (theImage != null) {
             g.drawImage(theImage,0,0,getWidth(),getHeight(),this);
+            //g.drawImage(theImage,0,0,1024,1024,this);
         }
     }
     

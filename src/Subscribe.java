@@ -11,7 +11,8 @@ import java.io.*;
 public class Subscribe {
 	
 	public Listener main(String input) throws IOException {
-		Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.204",6237);
+		//Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.204",6237);   //Broker number 1
+                Subscriber theSubscriber = new Subscriber("Subscriber1","PNALGORITHM","193.10.227.205",6237);   //Broker number 2
         // Don't log subscriptions.
         theSubscriber.setLogWriting(false);
      	// Don't print subscriptions to screen.
