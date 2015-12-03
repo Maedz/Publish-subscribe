@@ -12,7 +12,6 @@ public class Listener extends NotificationListener {
 	public String 	BusID;
 	public float 	Longitude = 9999;
 	public float	Latitude = 9999;
-	HashtablePublication retrievedPublication = new HashtablePublication();
 	@Override
 	public void notify( UUID subscriberId,String subscriberName,Publication notification) {
 	// Handle notification from MoPS broker.

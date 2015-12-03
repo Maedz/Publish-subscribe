@@ -57,7 +57,7 @@ public class Publishare {
 		List<VehiclePos> Information = new ArrayList<VehiclePos>();
 		try 
 		{
-			String id = "#";
+			
 			int a = 100;
 			theVehUrl = new URL( "http://developer.mbta.com/lib/gtrtfs/Vehicles.pb" );
 			GtfsRealtime.FeedMessage theFeed = GtfsRealtime.FeedMessage.parseFrom( ( InputStream )theVehUrl.openStream() );
@@ -73,6 +73,7 @@ public class Publishare {
 					continue;
 				}
 				GtfsRealtime.Position aPosition = aVehicle.getPosition();
+				String id = "#";
 				VehiclePos temp = new VehiclePos();
 				temp.Latitude = aPosition.getLatitude();
 				temp.Longitude = aPosition.getLongitude();
@@ -81,10 +82,10 @@ public class Publishare {
 				++a;
 			}
 			} catch ( MalformedURLException ex ) {
-				return null;
+				System.out.println("wrong 1");
 			} 
 			catch ( IOException ex ) {
-				return null;
+				System.out.println("wrong 1");
 			}
 		return Information;
 	}	
@@ -97,14 +98,17 @@ public class Publishare {
 	{
 		try
 		{
-			List<VehiclePos> info = new ArrayList<VehiclePos>();
-			if((info = fetch()) == null)
+			while(true)
 			{
-				System.out.println("Error Could Not Fetch Bus Information");
-				System.exit(0);
+				List<VehiclePos> info = new ArrayList<VehiclePos>();
+				if((info = fetch()) == null)
+				{
+					System.out.println("Error Could Not Fetch Bus Information");
+					System.exit(0);
+				}
+				publish(info);
+				Thread.sleep(30000);
 			}
-			publish(info);
-			Thread.sleep(30000);
 		}
 		catch(Exception e)
 		{

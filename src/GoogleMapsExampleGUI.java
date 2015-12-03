@@ -15,13 +15,6 @@ import javax.imageio.*;
 import javax.swing.Timer;
 
 import gmapstatic.*;
-import hr.fer.tel.pubsub.artefact.Publication;
-import hr.fer.tel.pubsub.common.ReadingWritingXML;
-import hr.fer.tel.pubsub.entity.NotificationListener;
-import hr.fer.tel.pubsub.artefact.TripletSubscription;
-import hr.fer.tel.pubsub.common.Triplet;
-import hr.fer.tel.pubsub.entity.Subscriber;
-import hr.fer.tel.pubsub.artefact.HashtablePublication;
 
 /**
  *
@@ -35,10 +28,10 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
   * the Google Maps API and the thin GMapStatic package.
   */
 
-    // TODO: Supply your own Google API key.
+    // TODO: Supply your own Google API key.AIzaSyCMFBPuh1aTF7cYGEy22iaD2vDNmIcmX4Q
     // Note that an API key has a limited 
     // lifetime and thus needs to be regenerated. OUR KEY ALEX: AIzaSyBR_wUAQ3iPM2e8WeoQIUw9c3xLJPRGZL8
-    private static final String GOOGLE_API_KEY = "AIzaSyCMFBPuh1aTF7cYGEy22iaD2vDNmIcmX4Q";
+    private static final String GOOGLE_API_KEY = "AIzaSyBR_wUAQ3iPM2e8WeoQIUw9c3xLJPRGZL8";
     
     // Buses in the vicinity of MIT.
     private double theLatitude  = 42.358543;
@@ -59,6 +52,8 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     private void Timer(ActionEvent evt) {
 		// TODO Auto-generated method stub
     	try {
+    		System.out.println("Timer");
+    		timer.stop();
     		MapMarker init = new MapMarker(theLatitude, theLongitude);
      		String theMapURIAsString = (String) MapLookup
      				.getMap(theLatitude,
@@ -73,8 +68,8 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
      			}
      		}
      		
-     		theMapURIAsString += "&sensor=false&key=AIzaSyCMFBPuh1aTF7cYGEy22iaD2vDNmIcmX4Q";
-     		System.out.println(theMapURIAsString);
+     		theMapURIAsString += "&sensor=false&key=AIzaSyBR_wUAQ3iPM2e8WeoQIUw9c3xLJPRGZL8";
+     		
  			// Retrieve map from Google Maps.
  			URL theMapURI = new URL(theMapURIAsString);
  			theMap = ImageIO.read(theMapURI.openStream());
@@ -89,9 +84,11 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         
  			// Display map image.
  			imagePanel1.repaint();
- 			timer.restart();
- 		} catch(Exception ex ) {
+ 		} 
+    	catch(Exception ex ) {
+    		timer.start();
  		}
+    	timer.start();
 	}
 
     /**
@@ -162,13 +159,7 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
     	
         MapLookup.setLicenseKey(GOOGLE_API_KEY);
         
-        timer = new Timer(10000, new java.awt.event.ActionListener() {
-    		public void actionPerformed(java.awt.event.ActionEvent evt) {
-    			Timer(evt);
-    		}
-    	});
- 		timer.setInitialDelay(0);
- 		timer.start();
+        timer.start();
         
         Subscribe sub = new Subscribe();
         try
@@ -186,13 +177,8 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         // http://maps.googleapis.com/maps/api/staticmap?parameters.
         // See link: https://developers.google.com/maps/documentation/staticmaps/
 
-     		
-     		try {
-     			Thread.sleep(1000);                 //1000 milliseconds is one second.
-     		} catch(InterruptedException ex) {
-     		}
-     		
-     		
+     	
+     	
      	}
      	//GEN-LAST:event_jButton1ActionPerformed
 
@@ -231,7 +217,11 @@ public class GoogleMapsExampleGUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    Timer timer;
+    Timer timer =  new Timer(10000, new java.awt.event.ActionListener() {
+ 		public void actionPerformed(java.awt.event.ActionEvent abc) {
+ 			Timer(abc);
+    	}
+    });;
     private List<Listener> theListeners = new ArrayList<Listener>();
     private ImagePanel imagePanel1;
     private javax.swing.JButton jButton1;
